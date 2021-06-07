@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_all_guests"
-        android:name="com.example.guests.ui.home.AllGuestsFragment"
+        android:name="com.example.guests.view.AllGuestsFragment"
         android:label="@string/menu_all_guests"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_presents"
-        android:name="com.example.guests.ui.gallery.PresentsFragment"
+        android:name="com.example.guests.view.PresentsFragment"
         android:label="@string/menu_presents"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_absents"
-        android:name="com.example.guests.ui.slideshow.AbsentsFragment"
+        android:name="com.example.guests.view.AbsentsFragment"
         android:label="@string/menu_absents"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>
