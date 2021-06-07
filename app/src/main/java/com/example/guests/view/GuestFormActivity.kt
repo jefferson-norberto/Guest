@@ -3,6 +3,8 @@ package com.example.guests.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.guests.viewmodel.GuestFormViewModel
 import com.example.guests.R
@@ -18,17 +20,31 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         mViewModel = ViewModelProvider(this).get(GuestFormViewModel::class.java)
 
         setListeners()
+        observe()
 
+    }
+
+    override fun onClick(v: View?) {
+        val id = v!!.id
+        if(id == R.id.button_save){
+            val name = edit_name.text.toString()
+            val phone = edit_phone.text.toString()
+            val presence = rbutton_present.isChecked
+            mViewModel.save(name, phone, presence)
+        }
     }
 
     private fun setListeners(){
         button_save.setOnClickListener(this)
     }
 
-    override fun onClick(v: View?) {
-        val id = v!!.id
-        if(id == R.id.button_save){
-
-        }
+    private fun observe(){
+        mViewModel.salveGuest.observe(this, Observer {
+            if(it){
+                Toast.makeText(applicationContext, "Sucesso", Toast.LENGTH_LONG)
+            }else{
+                Toast.makeText(applicationContext, "Falha", Toast.LENGTH_LONG)
+            }
+        })
     }
 }
