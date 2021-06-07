@@ -1,8 +1,22 @@
 package com.example.guests.service.repository
 
+import android.content.Context
 import com.example.guests.service.model.GuestModel
 
-class GuestRepository {
+class GuestRepository private constructor(context: Context){
+
+    private var mGuestDataBaseHelper = GuestDataBaseHelper(context)
+
+    companion object{
+        private lateinit var repository: GuestRepository
+
+        fun getInstance(context: Context): GuestRepository{
+            if(!::repository.isInitialized){
+                repository = GuestRepository(context)
+            }
+            return repository
+        }
+    }
 
     fun getAllGuests(): List<GuestModel>{
         val list: MutableList<GuestModel> = ArrayList()
@@ -19,7 +33,7 @@ class GuestRepository {
         return list
     }
 
-    //CRUD
+    //Singleton - só tem uma instancia da classe repository
     fun save(guest: GuestModel){
 
     }
