@@ -20,6 +20,54 @@ class GuestRepository private constructor(context: Context){
         }
     }
 
+    fun getOneGuest(id: Int): GuestModel?{
+
+        //dessa forma digo que a variável pode ser nula
+        var guest: GuestModel? = null
+        return try {
+            val db = mGuestDataBaseHelper.readableDatabase
+
+            //aqui é o critério de seleção no DB
+            //neste caso uso o ID como criterio para pesquisar
+            val selection = DataBaseConstants.GUEST.COLUMNS.ID + " = ?"
+            val args = arrayOf(id.toString())
+
+            //criando a variavel para passar as colunas na hora de selecionar
+            val projection = arrayOf(DataBaseConstants.GUEST.COLUMNS.NAME,
+                                     DataBaseConstants.GUEST.COLUMNS.PHONE,
+                                     DataBaseConstants.GUEST.COLUMNS.PRESENCE)
+
+            //Variavel usada para percorrer pelos dados no DB
+            val cursor = db.query(
+                                DataBaseConstants.GUEST.TABLE_NAME,
+                                projection,
+                                selection,
+                                args,
+                        null, //groupBy - agrupar por uma determinada condição
+                         null, //having
+                        null) //orderBy
+
+            //verifico se ele é diferente de nulo
+            if(cursor != null && cursor.count > 0){
+                //movo o cursor para a primeira posição
+                cursor.moveToFirst()
+
+                val name = cursor.getString(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.NAME))
+                val phone = cursor.getString(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.PHONE))
+                // para transformar o presence em boolean é só igualar essa atribuição a 1
+                val presence = (cursor.getInt(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.PRESENCE)) == 1)
+
+                guest = GuestModel(id, name, phone, presence)
+
+            }
+            //liberando o cursor no final
+            cursor?.close()
+            guest
+        }catch (e: Exception){
+            guest
+        }
+    }
+
     fun getAllGuests(): List<GuestModel>{
         val list: MutableList<GuestModel> = ArrayList()
         return list
