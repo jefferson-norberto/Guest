@@ -18,6 +18,7 @@ class GuestFormViewModel(application: Application): AndroidViewModel(application
     fun save(name: String, phone: String, presence: Boolean){
         //estou criando o modelo do meu convidado passando os parametros acima
         val guest = GuestModel(name = name, phone = phone, presence = presence)
-        mGuestRepository.save(guest)
+        mSaveGuest.value = mGuestRepository.save(guest)
+
     }
 }

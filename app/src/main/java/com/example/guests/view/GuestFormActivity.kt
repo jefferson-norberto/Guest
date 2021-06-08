@@ -45,6 +45,8 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             }else{
                 Toast.makeText(applicationContext, "Falha", Toast.LENGTH_LONG)
             }
+            finish()
+
         })
     }
 }
