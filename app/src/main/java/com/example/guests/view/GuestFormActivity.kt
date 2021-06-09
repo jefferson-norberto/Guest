@@ -20,6 +20,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         mViewModel = ViewModelProvider(this).get(GuestFormViewModel::class.java)
 
         setListeners()
+
         observe()
 
     }
@@ -27,26 +28,27 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         val id = v!!.id
         if(id == R.id.button_save){
+
             val name = edit_name.text.toString()
             val phone = edit_phone.text.toString()
             val presence = rbutton_present.isChecked
+
             mViewModel.save(name, phone, presence)
         }
     }
 
-    private fun setListeners(){
-        button_save.setOnClickListener(this)
-    }
-
     private fun observe(){
-        mViewModel.salveGuest.observe(this, Observer {
+        mViewModel.saveGuest.observe(this, Observer {
             if(it){
-                Toast.makeText(applicationContext, "Sucesso", Toast.LENGTH_LONG)
+                Toast.makeText(applicationContext, "Sucesso", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(applicationContext, "Falha", Toast.LENGTH_LONG)
+                Toast.makeText(applicationContext, "Falha", Toast.LENGTH_SHORT).show()
             }
             finish()
-
         })
+    }
+
+    private fun setListeners(){
+        button_save.setOnClickListener(this)
     }
 }

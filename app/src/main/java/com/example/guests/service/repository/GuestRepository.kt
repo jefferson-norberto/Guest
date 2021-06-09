@@ -176,7 +176,7 @@ class GuestRepository private constructor(context: Context){
     //Singleton - só tem uma instancia da classe repository
     fun save(guest: GuestModel): Boolean{
         //inserção no banco de dados, com um try catch para validar a operação
-        return try {
+        try {
             //criando a conexão com o DB
             val db = mGuestDataBaseHelper.writableDatabase
             var contentValues = ContentValues()
@@ -187,9 +187,9 @@ class GuestRepository private constructor(context: Context){
             contentValues.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, guest.presence)
 
             db.insert(DataBaseConstants.GUEST.TABLE_NAME, null, contentValues)
-            true
+            return true
         }catch (e: Exception){
-            false
+            return false
         }
     }
 
