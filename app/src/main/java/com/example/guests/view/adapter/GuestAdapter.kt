@@ -1,3 +1,9 @@
+/**
+ * A RecyclerView se torna mais performática que o ListView
+ * Pois o onCreate é chamado apenas 1 vez para preencher a tela
+ * Depois disso ela fica somente no onBinder
+ * **/
+
 package com.example.guests.view.adapter
 
 import android.view.LayoutInflater

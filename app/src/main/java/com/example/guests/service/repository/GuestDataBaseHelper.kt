@@ -1,3 +1,8 @@
+/**
+ * Caso mude a estrutura do seu Banco de Dados é preciso desinstalar o app
+ * para que seja chamado o onCreate novamente
+ * **/
+
 package com.example.guests.service.repository
 
 import android.content.Context

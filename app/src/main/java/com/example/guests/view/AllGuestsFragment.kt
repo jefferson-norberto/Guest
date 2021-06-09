@@ -42,8 +42,14 @@ class AllGuestsFragment : Fragment() {
 
         observer()
 
-        allGuestsViewModel.load()
+
         return root
+    }
+
+    //uso o onResume para quando retornar o foco a minha activity ela atualize a lista novamente
+    override fun onResume() {
+        super.onResume()
+        allGuestsViewModel.load()
     }
 
     override fun onDestroyView() {
