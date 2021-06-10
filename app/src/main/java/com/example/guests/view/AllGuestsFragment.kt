@@ -1,5 +1,6 @@
 package com.example.guests.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.guests.databinding.FragmentAllGuestsBinding
+import com.example.guests.service.constants.GuestConstants
 import com.example.guests.view.adapter.GuestAdapter
+import com.example.guests.view.listener.GuestListener
 import com.example.guests.viewmodel.AllGuestsViewModel
 import kotlinx.android.synthetic.main.fragment_all_guests.view.*
 
@@ -21,6 +24,7 @@ class AllGuestsFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var mGuestListener: GuestListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?
     ): View? {
@@ -39,6 +43,26 @@ class AllGuestsFragment : Fragment() {
 
         // 3 - Definir um adapter - juntar os dados do repositorio e aplicar na exibição
         recycle.adapter = mAdapter
+
+        //dessa forma consigo ignorar o construtor da classe
+        //e a minha fragment está lidando com o listener
+        //passando ele para o adapter
+        mGuestListener = object : GuestListener{
+            override fun onClick(id: Int) {
+                val intent = Intent(context, GuestFormActivity::class.java)
+
+                //variável usada para passar dados de uma activity para outra
+                val bundle = Bundle()
+                bundle.putInt(GuestConstants.GUESTID, id)
+
+                //inserindo os dados na intent para passar
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+
+        }
+
+        mAdapter.attachListener(mGuestListener)
 
         observer()
 
