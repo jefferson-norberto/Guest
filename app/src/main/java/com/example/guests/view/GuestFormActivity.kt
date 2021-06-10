@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_guest_form.*
 
 class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mViewModel: GuestFormViewModel
+    private var mGuestId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,14 +21,16 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
         mViewModel = ViewModelProvider(this).get(GuestFormViewModel::class.java)
 
-        //função que recebe os parâmetros passados pela outra activity
-        loadData()
 
-        //função de ouvir os botões
+        //para não ter problemaas futuros segue a ordem da chamada das funções
+        //função 1 - de ouvir os botões
         setListeners()
 
-        //função que usa o observer do modelo MVVM
+        //função 2 - usa o observer do modelo MVVM
         observe()
+
+        //função 3 - recebe os parâmetros passados pela outra activity
+        loadData()
 
     }
 
@@ -39,7 +42,8 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             val phone = edit_phone.text.toString()
             val presence = rbutton_present.isChecked
 
-            mViewModel.save(name, phone, presence)
+            //passo a logica de saber se é um novo usuário ou uma edição para o ViewModel
+            mViewModel.save(mGuestId, name, phone, presence)
         }
     }
 
@@ -51,10 +55,10 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
         //verificando se é uma chamada nova ou se é uma edição do usuário
         if(bundle != null){
-            val id = bundle.getInt(GuestConstants.GUESTID)
+            mGuestId = bundle.getInt(GuestConstants.GUESTID)
 
             //carregar esse contato no ViewModel
-            mViewModel.load(id)
+            mViewModel.load(mGuestId)
         }
     }
 
@@ -83,6 +87,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setListeners(){
+        rbutton_present.isChecked = true
         button_save.setOnClickListener(this)
     }
 }
