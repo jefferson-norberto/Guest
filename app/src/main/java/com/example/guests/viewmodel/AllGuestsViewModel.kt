@@ -21,4 +21,9 @@ class AllGuestsViewModel(application: Application) : AndroidViewModel(applicatio
         //carregamos do repositorio e atribuimos a nossa GuestList
         mGuestList.value = mGuestRepository.getAllGuests()
     }
+
+    //não preciso usar o mGuestList aqui pois o load já faz isso na chamada dentro do fragment
+    fun delete(id: Int){
+        mGuestRepository.delete(id)
+    }
 }
