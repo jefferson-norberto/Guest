@@ -13,22 +13,23 @@ import com.example.guests.databinding.FragmentAllGuestsBinding
 import com.example.guests.service.constants.GuestConstants
 import com.example.guests.view.adapter.GuestAdapter
 import com.example.guests.view.listener.GuestListener
-import com.example.guests.viewmodel.AllGuestsViewModel
+import com.example.guests.viewmodel.GuestsViewModel
 import kotlinx.android.synthetic.main.fragment_all_guests.view.*
 
 class AllGuestsFragment : Fragment() {
 
-    private lateinit var allGuestsViewModel: AllGuestsViewModel
+    private lateinit var mViewModel: GuestsViewModel
     private var _binding: FragmentAllGuestsBinding? = null
     private val mAdapter = GuestAdapter()
+    private lateinit var mGuestListener: GuestListener
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var mGuestListener: GuestListener
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?
     ): View? {
-        allGuestsViewModel = ViewModelProvider(this).get(AllGuestsViewModel::class.java)
+        mViewModel = ViewModelProvider(this).get(GuestsViewModel::class.java)
 
         _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
 
@@ -61,8 +62,8 @@ class AllGuestsFragment : Fragment() {
             }
 
             override fun onDelete(id: Int) {
-                allGuestsViewModel.delete(id)
-                allGuestsViewModel.load()
+                mViewModel.delete(id)
+                mViewModel.load(GuestConstants.FILTER.EMPTY)
             }
 
         }
@@ -78,7 +79,7 @@ class AllGuestsFragment : Fragment() {
     //uso o onResume para quando retornar o foco a minha activity ela atualize a lista novamente
     override fun onResume() {
         super.onResume()
-        allGuestsViewModel.load()
+        mViewModel.load(GuestConstants.FILTER.EMPTY)
     }
 
     override fun onDestroyView() {
@@ -87,7 +88,7 @@ class AllGuestsFragment : Fragment() {
     }
 
     private fun observer(){
-        allGuestsViewModel.guestList.observe(viewLifecycleOwner, Observer {
+        mViewModel.guestList.observe(viewLifecycleOwner, Observer {
             //neste caso it é a loista de usuário pegado
             mAdapter.updateGuests(it)
         })
