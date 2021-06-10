@@ -21,9 +21,13 @@ class GuestViewHolder(itemView: View, private val listener: GuestListener) : Rec
         //pegando a referencia do meu row_guest
         val textName = itemView.findViewById<TextView>(R.id.text_name_guest)
         val textPhone = itemView.findViewById<TextView>(R.id.text_phone_guest)
+        val checkPresence = itemView.findViewById<CheckBox>(R.id.check_presence)
         //quando encontro atribuo o meu guest ao textView
         textName.text = guest.name
         textPhone.text = guest.phone
+
+        //como presence é um boolean não preciso de if else, ele já tem minha informação
+        checkPresence.isChecked = guest.presence
 
         //faz o setOnClickListener do texName e invoca o onClick
         textName.setOnClickListener {
