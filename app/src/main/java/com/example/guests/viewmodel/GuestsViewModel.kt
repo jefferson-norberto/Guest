@@ -13,7 +13,7 @@ import com.example.guests.service.repository.GuestRepository
 class GuestsViewModel(application: Application) : AndroidViewModel(application) {
 
     //acesso aos dados
-    private val mGuestRepository = GuestRepository.getInstance(application.applicationContext)
+    private val mGuestRepository = GuestRepository(application.applicationContext)
 
     private val mGuestList = MutableLiveData<List<GuestModel>>()
     val guestList: LiveData<List<GuestModel>> = mGuestList
@@ -32,6 +32,7 @@ class GuestsViewModel(application: Application) : AndroidViewModel(application) 
 
     //não preciso usar o mGuestList aqui pois o load já faz isso na chamada dentro do fragment
     fun delete(id: Int){
-        mGuestRepository.delete(id)
+        val guest = mGuestRepository.getOneGuest(id)
+        mGuestRepository.delete(guest)
     }
 }

@@ -9,7 +9,7 @@ import com.example.guests.service.repository.GuestRepository
 
 class GuestFormViewModel(application: Application): AndroidViewModel(application) {
     private val mContext = application.applicationContext
-    private val mGuestRepository: GuestRepository = GuestRepository.getInstance(mContext)
+    private val mGuestRepository: GuestRepository = GuestRepository(mContext)
 
     //variável que escuta na hora de salvar
     private var mSaveGuest = MutableLiveData<Boolean>()
@@ -23,7 +23,13 @@ class GuestFormViewModel(application: Application): AndroidViewModel(application
      * Salva convidado
      * */
     fun save(id: Int, name: String, phone: String, presence: Boolean) {
-        val guest = GuestModel(id, name, phone, presence)
+        //usando o ROOM
+        val guest = GuestModel().apply {
+            this.id = id
+            this.name = name
+            this.phone = phone
+            this.presence = presence
+        }
 
         if(id == 0){
             mSaveGuest.value = mGuestRepository.save(guest)
